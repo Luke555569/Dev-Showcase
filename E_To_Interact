@@ -1,0 +1,509 @@
+local Services = {
+	ReplicatedStorage = game:GetService("ReplicatedStorage"),
+	ReplicatedFirst = game:GetService("ReplicatedFirst"),
+	StarterGui = game:GetService("StarterGui"),
+	Players = game:GetService("Players"),
+	CollectionService = game:GetService("CollectionService"),
+	UserInputService = game:GetService("UserInputService"),
+	TweenService = game:GetService("TweenService")
+}
+
+local Player = Services.Players.LocalPlayer
+local Doors = workspace.CurrentCamera:GetChildren()
+local SelectedDoor = nil
+
+Services.UserInputService.InputBegan:Connect(function(IO, Chatting)
+	if IO.KeyCode == Enum.KeyCode.E and Chatting == false then
+		if SelectedDoor ~= nil then
+			if SelectedDoor.Name ~= "GateKeycard" then
+				Services.ReplicatedStorage.EInteract:FireServer(SelectedDoor)
+			end
+			print(SelectedDoor.Name)
+
+			if SelectedDoor:FindFirstChild("KeycardDoor") then
+				for i,v in pairs(SelectedDoor.KeycardDoor.ScriptedComponents.AllowedCards:GetChildren()) do
+					if Player.Character:FindFirstChild(v.Name) or Player.Backpack:FindFirstChild(v.Name) then
+						for i=1, #"Access Granted" do
+							wait(.01)
+							Player.PlayerGui.InteractUI.Label.Text = string.sub("Access Granted", 1, i)
+							Player.PlayerGui.InteractUI.Label.Shadow.Text = string.sub("Access Granted", 1, i)
+						end
+						SelectedDoor = nil
+					end
+				end	
+			elseif SelectedDoor.Name == "GateKeycard" then
+				for i,v in pairs(SelectedDoor.AllowedCards:GetChildren()) do
+					if Player.Character:FindFirstChild(v.Name) or Player.Backpack:FindFirstChild(v.Name) then
+						local Keycard = nil
+						local KeycardIsIn = nil
+
+						--if Player.Character:FindFirstChild(v.Name) then
+						--	Keycard = Player.Character:FindFirstChild(v.Name)
+						--	KeycardIsIn = "Equipped"
+						--elseif Player.Backpack:FindFirstChild(v.Name) then
+						--	Keycard = Player.Backpack:FindFirstChild(v.Name)		
+						--	KeycardIsIn = "Backpack"
+						--end
+
+						local TS = Services.TweenService		
+						--local Card = Keycard.Card
+
+						if (Player.Character.HumanoidRootPart.Position - SelectedDoor.CardScanner1.PartDetection.Position).Magnitude <= 5 then
+							local tweenInfoMoveTo = TweenInfo.new(1.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+							local tweenInfoMoveBack = TweenInfo.new(1.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+							local scannerInUse = SelectedDoor.Scripting.KeycardScannerInUse1
+
+							if scannerInUse.Value == false and SelectedDoor.Scripting.Open.Value == false then
+								--scannerInUse.Value = true
+								--if KeycardIsIn == "Equipped" then
+								--	Keycard.Parent = Player.Backpack
+								--	wait(.1)
+								--	Keycard.Parent = game.Workspace
+								--else
+								--	Keycard.Parent = game.Workspace
+								--end
+								--wait(1)
+								--Keycard.Handle.Anchored = true
+								--Keycard.Handle.Position = SelectedDoor.CardScanner1.KeycardMovePos.Position
+								--Keycard.Card.Position = SelectedDoor.CardScanner1.KeycardMovePos.Position
+								--Keycard.Card.Orientation = Vector3.new(0, 0, -90)
+								--Keycard.Card.Anchored = true
+								--wait(.1)
+								--TS:Create(Card, tweenInfoMoveTo, {
+								--	CFrame = Card.CFrame * CFrame.new(0, -0.5, 0)
+								--}):Play()
+								--wait(0.5)
+								--TS:Create(Card, tweenInfoMoveTo, {
+								--	CFrame = Card.CFrame * CFrame.new(0.2, 0, 0)
+								--}):Play()
+								--wait(0.5)
+								--TS:Create(Card, tweenInfoMoveTo, {
+								--	CFrame = Card.CFrame * CFrame.new(-0.2, 0, 0)
+								--}):Play()
+								--wait(0.5)
+								for i,v in pairs(SelectedDoor.CardScanner1.LightStrip:GetChildren()) do
+									local Light = SelectedDoor.CardScanner1.LightStrip:FindFirstChild("Light".. i)
+									Light.BrickColor = BrickColor.new("Lime green")
+									wait(.05)
+								end
+								wait(.1)
+								--TS:Create(Card, tweenInfoMoveBack, {
+								--	CFrame = Card.CFrame * CFrame.new(0, 0.5, 0)
+								--}):Play()
+								wait(.3)
+								for i,v in pairs(SelectedDoor.CardScanner1.LightStrip:GetChildren()) do
+									local Light = SelectedDoor.CardScanner1.LightStrip:FindFirstChild("Light".. i)
+									Light.BrickColor = BrickColor.new("Sand red")
+									wait(.05)
+								end
+								wait(0.5)
+								--Keycard.Handle.Anchored = false
+								--Keycard.Card.Anchored = false
+								--if KeycardIsIn == "Backpack" then
+								--	Keycard.Parent = Player.Backpack
+								--elseif KeycardIsIn == "Equipped" then
+								--	Keycard.Parent = Player.Backpack
+								--	wait(.1) 
+								--	Keycard.Parent = Player.Character							
+								--end
+								wait(0.1)
+								Services.ReplicatedStorage.EInteract:FireServer(SelectedDoor)
+								scannerInUse.Value = false
+								print(SelectedDoor.Scripting.Open.Value)
+								wait(0.1)
+								for i=1, #"Access Granted" do
+									wait(.01)
+									Player.PlayerGui.InteractUI.Label.Text = string.sub("Access Granted", 1, i)
+									Player.PlayerGui.InteractUI.Label.Shadow.Text = string.sub("Access Granted", 1, i)
+								end
+							end
+
+
+						elseif (Player.Character.HumanoidRootPart.Position - SelectedDoor.CardScanner2.PartDetection.Position).Magnitude <= 5 then
+							local tweenInfoMoveTo = TweenInfo.new(1.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+							local tweenInfoMoveBack = TweenInfo.new(1.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+							local scannerInUse = SelectedDoor.Scripting.KeycardScannerInUse2
+
+							if scannerInUse.Value == false and SelectedDoor.Scripting.Open.Value == false then
+								scannerInUse.Value = true
+								wait(1)
+								wait(0.5)
+								for i,v in pairs(SelectedDoor.CardScanner2.LightStrip:GetChildren()) do
+									local Light = SelectedDoor.CardScanner2.LightStrip:FindFirstChild("Light".. i)
+									Light.BrickColor = BrickColor.new("Lime green")
+									wait(.05)
+								end
+								wait(.1)
+
+								wait(.3)
+								for i,v in pairs(SelectedDoor.CardScanner2.LightStrip:GetChildren()) do
+									local Light = SelectedDoor.CardScanner2.LightStrip:FindFirstChild("Light".. i)
+									Light.BrickColor = BrickColor.new("Sand red")
+									wait(.05)
+								end
+								wait(0.5)
+								wait(0.15)
+								Services.ReplicatedStorage.EInteract:FireServer(SelectedDoor)
+								scannerInUse.Value = false
+								print(SelectedDoor.Scripting.Open.Value)
+								wait(0.1)
+								for i=1, #"Access Granted" do
+									wait(.01)
+									Player.PlayerGui.InteractUI.Label.Text = string.sub("Access Granted", 1, i)
+									Player.PlayerGui.InteractUI.Label.Shadow.Text = string.sub("Access Granted", 1, i)
+								end
+							end
+						end
+					end
+				end
+
+				-- Access Denied
+
+				local hasAllowedCard = nil
+
+				wait(2)
+
+				for i,v in pairs(Player.Backpack:GetChildren()) do
+					if SelectedDoor.AllowedCards:FindFirstChild(v.Name) then
+						hasAllowedCard = true
+					end
+				end
+
+				for i,v in pairs(Player.Character:GetChildren()) do
+					if v:IsA("Tool")  then
+						if SelectedDoor.AllowedCards:FindFirstChild(v.Name) then
+							hasAllowedCard = true
+						end
+					end
+				end
+
+				if hasAllowedCard ~= true then
+					hasAllowedCard = false
+				end
+
+				if hasAllowedCard == false then					
+					for i,v in pairs(SelectedDoor.DeniedCards:GetChildren()) do
+						if Player.Character:FindFirstChild(v.Name) or Player.Backpack:FindFirstChild(v.Name) then
+							local Keycard = nil
+							local KeycardIsIn = nil
+
+							local TS = Services.TweenService		
+
+							if (Player.Character.HumanoidRootPart.Position - SelectedDoor.CardScanner1.PartDetection.Position).Magnitude <= 5 then
+								local tweenInfoMoveTo = TweenInfo.new(1.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+								local tweenInfoMoveBack = TweenInfo.new(1.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+								local scannerInUse = SelectedDoor.Scripting.KeycardScannerInUse1
+
+								if scannerInUse.Value == false and SelectedDoor.Scripting.Open.Value == false then
+									scannerInUse.Value = true
+									wait(0.5)
+									for i,v in pairs(SelectedDoor.CardScanner1.LightStrip:GetChildren()) do
+										local Light = SelectedDoor.CardScanner1.LightStrip:FindFirstChild("Light".. i)
+										Light.BrickColor = BrickColor.new("Really red")
+										wait(.05)
+									end
+									wait(.1)
+									wait(.3)
+									for i,v in pairs(SelectedDoor.CardScanner1.LightStrip:GetChildren()) do
+										local Light = SelectedDoor.CardScanner1.LightStrip:FindFirstChild("Light".. i)
+										Light.BrickColor = BrickColor.new("Sand red")
+										wait(.05)
+									end
+									wait(0.5)
+									scannerInUse.Value = false
+									for i=1, #"Access Denied" do
+										wait(.01)
+										Player.PlayerGui.InteractUI.Label.Text = string.sub("Access Denied", 1, i)
+										Player.PlayerGui.InteractUI.Label.Shadow.Text = string.sub("Access Denied", 1, i)
+									end
+								end
+							elseif (Player.Character.HumanoidRootPart.Position - SelectedDoor.CardScanner2.PartDetection.Position).Magnitude <= 5 then
+								local tweenInfoMoveTo = TweenInfo.new(1.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+								local tweenInfoMoveBack = TweenInfo.new(1.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+								local scannerInUse = SelectedDoor.Scripting.KeycardScannerInUse2
+
+								if scannerInUse.Value == false and SelectedDoor.Scripting.Open.Value == false then
+									scannerInUse.Value = true
+
+									scannerInUse.Value = false
+
+									wait(0.5)
+									for i,v in pairs(SelectedDoor.CardScanner2.LightStrip:GetChildren()) do
+										local Light = SelectedDoor.CardScanner2.LightStrip:FindFirstChild("Light".. i)
+										Light.BrickColor = BrickColor.new("Really red")
+										wait(.05)
+									end
+									wait(.1)
+									wait(.3)
+									for i,v in pairs(SelectedDoor.CardScanner2.LightStrip:GetChildren()) do
+										local Light = SelectedDoor.CardScanner2.LightStrip:FindFirstChild("Light".. i)
+										Light.BrickColor = BrickColor.new("Sand red")
+										wait(.05)
+									end
+									wait(0.5)
+
+									scannerInUse.Value = false
+									for i=1, #"Access Denied" do
+										wait(.01)
+										Player.PlayerGui.InteractUI.Label.Text = string.sub("Access Denied", 1, i)
+										Player.PlayerGui.InteractUI.Label.Shadow.Text = string.sub("Access Denied", 1, i)
+									end
+								end
+							end
+						end
+					end
+				end
+
+			elseif SelectedDoor.Name == "HandleDoor" then
+				for i=1, #"Access Granted" do
+					wait(.01)
+					Player.PlayerGui.InteractUI.Label.Text = string.sub("Access Granted", 1, i)
+					Player.PlayerGui.InteractUI.Label.Shadow.Text = string.sub("Access Granted", 1, i)
+				end
+				SelectedDoor = nil
+			elseif SelectedDoor:FindFirstChild("ScriptedComponents") then
+				for i,v in pairs(SelectedDoor.ScriptedComponents.AllowedCards:GetChildren()) do
+					if Player.Character:FindFirstChild(v.Name) or Player.Backpack:FindFirstChild(v.Name) then
+						for i=1, #"Access Granted" do
+							wait(.015)
+							Player.PlayerGui.InteractUI.Label.Text = string.sub("Access Granted", 1, i)
+							Player.PlayerGui.InteractUI.Label.Shadow.Text = string.sub("Access Granted", 1, i)
+						end
+						SelectedDoor = nil
+					end
+				end
+			elseif SelectedDoor.Name == "ArmoredDoor" then
+				for i,v in pairs(SelectedDoor.AllowedCards:GetChildren()) do
+					if Player.Character:FindFirstChild(v.Name) or Player.Backpack:FindFirstChild(v.Name) then
+						for i=1, #"Access Granted" do
+							wait(.01)
+							Player.PlayerGui.InteractUI.Label.Text = string.sub("Access Granted", 1, i)
+							Player.PlayerGui.InteractUI.Label.Shadow.Text = string.sub("Access Granted", 1, i)
+						end
+						SelectedDoor = nil
+					end
+				end	
+			elseif SelectedDoor.Name == "OutwardDoubleDoor" then
+				for i,v in pairs(SelectedDoor.Scripting.AllowedCards:GetChildren()) do
+					if Player.Character:FindFirstChild(v.Name) or Player.Backpack:FindFirstChild(v.Name) then
+						for i=1, #"Access Granted" do
+							wait(.01)
+							Player.PlayerGui.InteractUI.Label.Text = string.sub("Access Granted", 1, i)
+							Player.PlayerGui.InteractUI.Label.Shadow.Text = string.sub("Access Granted", 1, i)
+						end
+						SelectedDoor = nil
+					end
+				end	
+			elseif SelectedDoor.Name == "FD2" then
+				for i,v in pairs(SelectedDoor.AllowedCards:GetChildren()) do
+					if Player.Character:FindFirstChild(v.Name) or Player.Backpack:FindFirstChild(v.Name) then
+						for i=1, #"Access Granted" do
+							wait(.01)
+							Player.PlayerGui.InteractUI.Label.Text = string.sub("Access Granted", 1, i)
+							Player.PlayerGui.InteractUI.Label.Shadow.Text = string.sub("Access Granted", 1, i)
+						end
+						SelectedDoor = nil
+					end
+				end	
+			end		
+		end
+	end
+end)
+
+local debounce = false
+local stopDebounce = false
+local cardReader = nil
+
+spawn(function()
+	while true do
+		wait(.1)
+		for _,door in pairs(Doors) do
+			if door == SelectedDoor then
+			else
+				if Player.Character and Player.Character:FindFirstChild("HumanoidRootPart") ~= nil then
+					if stopDebounce == true then
+						if door.Name == "GateKeycard" then
+							SelectedDoor = door
+							if (Player.Character.HumanoidRootPart.Position - SelectedDoor.CardScanner1.PartDetection.Position).Magnitude > 5 and cardReader == 1 then
+								stopDebounce = false
+								cardReader = nil
+							elseif (Player.Character.HumanoidRootPart.Position - SelectedDoor.CardScanner2.PartDetection.Position).Magnitude > 5 and cardReader == 2 then
+								stopDebounce = false
+								cardReader = nil
+							end
+						end
+					end
+
+					if debounce == false then
+						if door:FindFirstChild("KeycardDoor") then
+							if (Player.Character.HumanoidRootPart.Position - door.KeycardDoor.ScriptedComponents.Light.Position).Magnitude <= 8 then
+								SelectedDoor = door
+								for i=1, #"Press [E] To Interact" do
+									wait(.01)
+									Player.PlayerGui.InteractUI.Label.Text = string.sub("Press [E] To Interact", 1, i)
+									Player.PlayerGui.InteractUI.Label.Shadow.Text = string.sub("Press [E] To Interact", 1, i)
+								end
+							end
+
+						elseif door.Name == "GateKeycard" then
+							if (Player.Character.HumanoidRootPart.Position - door.CardScanner1.PartDetection.Position).Magnitude <= 4 then
+								SelectedDoor = door
+								for i=1, #"Press [E] To Interact" do
+									wait(.01)
+									Player.PlayerGui.InteractUI.Label.Text = string.sub("Press [E] To Interact", 1, i)
+									Player.PlayerGui.InteractUI.Label.Shadow.Text = string.sub("Press [E] To Interact", 1, i)
+								end
+								debounce = true
+								stopDebounce = true
+								cardReader = 1
+							elseif (Player.Character.HumanoidRootPart.Position - door.CardScanner2.PartDetection.Position).Magnitude <= 4 then
+								SelectedDoor = door
+								for i=1, #"Press [E] To Interact" do
+									wait(.01)
+									Player.PlayerGui.InteractUI.Label.Text = string.sub("Press [E] To Interact", 1, i)
+									Player.PlayerGui.InteractUI.Label.Shadow.Text = string.sub("Press [E] To Interact", 1, i)
+								end
+								debounce = true
+								stopDebounce = true
+								cardReader = 2
+							end
+						elseif door.Name == "HandleDoor" then
+							if (Player.Character.HumanoidRootPart.Position - door.Door.MainDoor.PartMain.Position).Magnitude <= 8 then
+								SelectedDoor = door
+								for i=1, #"Press [E] To Interact" do
+									wait(.01)
+									Player.PlayerGui.InteractUI.Label.Text = string.sub("Press [E] To Interact", 1, i)
+									Player.PlayerGui.InteractUI.Label.Shadow.Text = string.sub("Press [E] To Interact", 1, i)
+								end
+							end
+						elseif door:FindFirstChild("ScriptedComponents") then
+							if (Player.Character.HumanoidRootPart.Position - door.ScriptedComponents.Light.Position).Magnitude <= 8 then
+								SelectedDoor = door
+								for i=1, #"Press [E] To Interact" do
+									wait(.01)
+									Player.PlayerGui.InteractUI.Label.Text = string.sub("Press [E] To Interact", 1, i)
+									Player.PlayerGui.InteractUI.Label.Shadow.Text = string.sub("Press [E] To Interact", 1, i)
+								end
+							end			
+						elseif door.Name == "ArmoredDoor" then
+							if (Player.Character.HumanoidRootPart.Position - door.CardReader1.Light.Position).Magnitude <= 8 then
+								SelectedDoor = door
+								for i=1, #"Press [E] To Interact" do
+									wait(.01)
+									Player.PlayerGui.InteractUI.Label.Text = string.sub("Press [E] To Interact", 1, i)
+									Player.PlayerGui.InteractUI.Label.Shadow.Text = string.sub("Press [E] To Interact", 1, i)
+								end
+							elseif (Player.Character.HumanoidRootPart.Position - door.CardReader2.Light.Position).Magnitude <= 8 then
+								SelectedDoor = door
+								for i=1, #"Press [E] To Interact" do
+									wait(.01)
+									Player.PlayerGui.InteractUI.Label.Text = string.sub("Press [E] To Interact", 1, i)
+									Player.PlayerGui.InteractUI.Label.Shadow.Text = string.sub("Press [E] To Interact", 1, i)
+								end
+							end
+						elseif door.Name == "FD2" then
+							if (Player.Character.HumanoidRootPart.Position - door.CardReader1.Light.Position).Magnitude <= 8 then
+								SelectedDoor = door
+								for i=1, #"Press [E] To Interact" do
+									wait(.01)
+									Player.PlayerGui.InteractUI.Label.Text = string.sub("Press [E] To Interact", 1, i)
+									Player.PlayerGui.InteractUI.Label.Shadow.Text = string.sub("Press [E] To Interact", 1, i)
+								end
+							elseif (Player.Character.HumanoidRootPart.Position - door.CardReader2.Light.Position).Magnitude <= 8 then
+								SelectedDoor = door
+								for i=1, #"Press [E] To Interact" do
+									wait(.01)
+									Player.PlayerGui.InteractUI.Label.Text = string.sub("Press [E] To Interact", 1, i)
+									Player.PlayerGui.InteractUI.Label.Shadow.Text = string.sub("Press [E] To Interact", 1, i)
+								end
+							end
+						elseif door.Name == "OutwardDoubleDoor" then
+							if (Player.Character.HumanoidRootPart.Position - door.CardReader1.Light.Position).Magnitude <= 8 then
+								SelectedDoor = door
+								for i=1, #"Press [E] To Interact" do
+									wait(.01)
+									Player.PlayerGui.InteractUI.Label.Text = string.sub("Press [E] To Interact", 1, i)
+									Player.PlayerGui.InteractUI.Label.Shadow.Text = string.sub("Press [E] To Interact", 1, i)
+								end
+							elseif (Player.Character.HumanoidRootPart.Position - door.CardReader2.Light.Position).Magnitude <= 8 then
+								SelectedDoor = door
+								for i=1, #"Press [E] To Interact" do
+									wait(.01)
+									Player.PlayerGui.InteractUI.Label.Text = string.sub("Press [E] To Interact", 1, i)
+									Player.PlayerGui.InteractUI.Label.Shadow.Text = string.sub("Press [E] To Interact", 1, i)
+								end
+							end
+						end
+						
+					end
+					end
+				end				
+			end
+		end
+
+		if SelectedDoor ~= nil then
+			if stopDebounce == false then
+				if SelectedDoor:FindFirstChild("KeycardDoor") then
+					if (Player.Character.HumanoidRootPart.Position - SelectedDoor.KeycardDoor.ScriptedComponents.Light.Position).Magnitude > 8 then
+						SelectedDoor = nil
+						Player.PlayerGui.InteractUI.Label.Text = " "
+						Player.PlayerGui.InteractUI.Label.Shadow.Text = " "
+					end
+				elseif SelectedDoor.Name == "GateKeycard" then
+					if (Player.Character.HumanoidRootPart.Position - SelectedDoor.CardScanner1.PartDetection.Position).Magnitude > 5 then
+						SelectedDoor = nil
+						Player.PlayerGui.InteractUI.Label.Text = " "
+						Player.PlayerGui.InteractUI.Label.Shadow.Text = " "
+						debounce = false
+					elseif (Player.Character.HumanoidRootPart.Position - SelectedDoor.CardScanner2.PartDetection.Position).Magnitude > 5 then
+						SelectedDoor = nil
+						Player.PlayerGui.InteractUI.Label.Text = " "
+						Player.PlayerGui.InteractUI.Label.Shadow.Text = " "
+						debounce = false
+					end
+				elseif SelectedDoor.Name == "HandleDoor" then
+					if (Player.Character.HumanoidRootPart.Position - SelectedDoor.Door.MainDoor.PartMain.Position).Magnitude > 8 then
+						SelectedDoor = nil
+						Player.PlayerGui.InteractUI.Label.Text = " "
+						Player.PlayerGui.InteractUI.Label.Shadow.Text = " "
+					end
+				elseif SelectedDoor:FindFirstChild("ScriptedComponents") then
+					if (Player.Character.HumanoidRootPart.Position - SelectedDoor.ScriptedComponents.Light.Position).Magnitude > 8 then
+						SelectedDoor = nil
+						Player.PlayerGui.InteractUI.Label.Text = " "
+						Player.PlayerGui.InteractUI.Label.Shadow.Text = " "
+					end
+				elseif SelectedDoor.Name == "ArmoredDoor" then
+					if (Player.Character.HumanoidRootPart.Position - SelectedDoor.CardReader1.Light.Position).Magnitude > 8 then
+						SelectedDoor = nil
+						Player.PlayerGui.InteractUI.Label.Text = " "
+						Player.PlayerGui.InteractUI.Label.Shadow.Text = " "
+					elseif (Player.Character.HumanoidRootPart.Position - SelectedDoor.CardReader2.Light.Position).Magnitude > 8 then
+						SelectedDoor = nil
+						Player.PlayerGui.InteractUI.Label.Text = " "
+						Player.PlayerGui.InteractUI.Label.Shadow.Text = " "
+					end
+				elseif SelectedDoor.Name == "OutwardDoubleDoor" then
+					if (Player.Character.HumanoidRootPart.Position - SelectedDoor.CardReader1.Light.Position).Magnitude > 8 then
+						SelectedDoor = nil
+						Player.PlayerGui.InteractUI.Label.Text = " "
+						Player.PlayerGui.InteractUI.Label.Shadow.Text = " "
+					elseif (Player.Character.HumanoidRootPart.Position - SelectedDoor.CardReader2.Light.Position).Magnitude > 8 then
+						SelectedDoor = nil
+						Player.PlayerGui.InteractUI.Label.Text = " "
+						Player.PlayerGui.InteractUI.Label.Shadow.Text = " "
+				end
+			elseif SelectedDoor.Name == "FD2" then
+				if (Player.Character.HumanoidRootPart.Position - SelectedDoor.CardReader1.Light.Position).Magnitude > 8 then
+					SelectedDoor = nil
+					Player.PlayerGui.InteractUI.Label.Text = " "
+					Player.PlayerGui.InteractUI.Label.Shadow.Text = " "
+				elseif (Player.Character.HumanoidRootPart.Position - SelectedDoor.CardReader2.Light.Position).Magnitude > 8 then
+					SelectedDoor = nil
+					Player.PlayerGui.InteractUI.Label.Text = " "
+					Player.PlayerGui.InteractUI.Label.Shadow.Text = " "
+				end
+			end
+		end
+	end
+end)
