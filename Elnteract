@@ -1,0 +1,83 @@
+
+local Services = {
+	ReplicatedStorage = game:GetService("ReplicatedStorage"),
+	ReplicatedFirst = game:GetService("ReplicatedFirst"),
+	StarterGui = game:GetService("StarterGui"),
+	Players = game:GetService("Players"),
+	CollectionService = game:GetService("CollectionService"),
+	UserInputService = game:GetService("UserInputService")
+}
+
+Services.ReplicatedStorage.Events.HandleDoorDebounce.OnServerEvent:Connect(function(plr, door)
+	door.debounce.Value = false
+end)
+
+Services.ReplicatedStorage.Events.KeycardGateEvent.OnServerEvent:Connect(function(plr, Open)
+	Open.Value = false
+end)
+
+Services.ReplicatedStorage.EInteract.OnServerEvent:Connect(function(Player, Door)
+	if Player.Character and Player.Character:FindFirstChild("HumanoidRootPart") then
+		if Door:FindFirstChild("KeycardDoor") then
+			for i,v in pairs(Door.KeycardDoor.ScriptedComponents.AllowedCards:GetChildren()) do
+				if Player.Character:FindFirstChild(v.Name) or Player.Backpack:FindFirstChild(v.Name) and (Player.Character.HumanoidRootPart.Position - Door.KeycardDoor.ScriptedComponents.Light.Position).magnitude <= 8 then
+					Door.Open.Value = true
+				elseif (Player.Character.HumanoidRootPart.Position - Door.KeycardDoor.ScriptedComponents.Light.Position).magnitude >= 15 then
+					--Player:Kick("Attempted exploit on the E To Interact system.")
+				end
+			end	
+		elseif Door.Name == "HandleDoor" then
+			if (Player.Character.HumanoidRootPart.Position - Door.Door.MainDoor.PartMain.Position).magnitude <= 8 and Door.Scripting.Closed.Value == true and Door.Scripting.Open.Value == false and Door.Scripting:WaitForChild("debounce").Value == false then
+				Door.Scripting:WaitForChild("debounce").Value = true
+				Door.Scripting.Open.Value = true
+				Door.Scripting.Closed.Value = false
+			elseif Door.Scripting.Open.Value == true and Door.Scripting:WaitForChild("debounce").Value == false then
+				Door.Scripting:WaitForChild("debounce").Value = true
+				Door.Scripting.Open.Value = false
+				Door.Scripting.Closed.Value = true
+			end
+		elseif Door.Name == "GateKeycard" then
+			if Door.Scripting.Open.Value == true then
+				Door.Scripting.Open.Value = false
+			end
+
+			for i,v in pairs(Door.AllowedCards:GetChildren()) do
+				if Player.Character:FindFirstChild(v.Name) or Player.Backpack:FindFirstChild(v.Name) then
+					Door.Scripting.Open.Value = true
+				end
+			end
+		elseif Door:FindFirstChild("ScriptedComponents") then
+			for i,v in pairs(Door.ScriptedComponents.AllowedCards:GetChildren()) do
+				if Player.Character:FindFirstChild(v.Name) or Player.Backpack:FindFirstChild(v.Name) and (Player.Character.HumanoidRootPart.Position - Door.ScriptedComponents.Light.Position).magnitude <= 8 then
+					Door.Open.Value = true
+				elseif (Player.Character.HumanoidRootPart.Position - Door.ScriptedComponents.Light.Position).magnitude >= 15 then
+					--Player:Kick("Attempted exploit on the E To Interact system.")
+				end
+			end				
+		elseif Door.Name == "ArmoredDoor" then
+			for i,v in pairs(Door.AllowedCards:GetChildren()) do
+				if Player.Character:FindFirstChild(v.Name) or Player.Backpack:FindFirstChild(v.Name) and (Player.Character.HumanoidRootPart.Position - Door.CardReader1.Light.Position).magnitude <= 8 then
+					Door.Open.Value = true
+				elseif Player.Character:FindFirstChild(v.Name) or Player.Backpack:FindFirstChild(v.Name) and (Player.Character.HumanoidRootPart.Position - Door.CardReader2.Light.Position).magnitude <= 8 then
+					Door.Open.Value = true
+				end
+			end
+		elseif Door.Name == "OutwardDoubleDoor" then
+			for i,v in pairs(Door.Scripting.AllowedCards:GetChildren()) do
+				if Player.Character:FindFirstChild(v.Name) or Player.Backpack:FindFirstChild(v.Name) and (Player.Character.HumanoidRootPart.Position - Door.CardReader1.Light.Position).magnitude <= 8 then
+					Door.Open.Value = true
+				elseif Player.Character:FindFirstChild(v.Name) or Player.Backpack:FindFirstChild(v.Name) and (Player.Character.HumanoidRootPart.Position - Door.CardReader2.Light.Position).magnitude <= 8 then
+					Door.Open.Value = true
+				end
+			end
+		elseif Door.Name == "FD2" then
+			for i,v in pairs(Door.AllowedCards:GetChildren()) do
+				if Player.Character:FindFirstChild(v.Name) or Player.Backpack:FindFirstChild(v.Name) and (Player.Character.HumanoidRootPart.Position - Door.CardReader1.Light.Position).magnitude <= 8 then
+					Door.Open.Value = true
+				elseif Player.Character:FindFirstChild(v.Name) or Player.Backpack:FindFirstChild(v.Name) and (Player.Character.HumanoidRootPart.Position - Door.CardReader2.Light.Position).magnitude <= 8 then
+					Door.Open.Value = true
+				end
+			end
+		end
+	end
+end)
