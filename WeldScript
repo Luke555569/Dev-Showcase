@@ -1,0 +1,8 @@
+for i,v in pairs(script.Parent:GetChildren()) do
+	if v.Name ~= "RootPart" and not v:IsA("Script") then
+		local weld = script.Parent.Parent.WeldConstraint:Clone()
+		weld.Parent = v
+		weld.Part0 = v
+		weld.Part1 = script.Parent.RootPart
+	end
+end
