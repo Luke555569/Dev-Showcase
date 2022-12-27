@@ -1,0 +1,181 @@
+local groupId = 16210278
+
+game.Players.PlayerAdded:Connect(function(player)
+	player.CharacterAdded:Connect(function(char)
+		local rank = player:GetRoleInGroup(groupId)
+		while not char:FindFirstChild("Humanoid") do wait() end
+		char.Humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
+		local overhead = script.Rank:Clone()
+		
+		overhead.User.Text = player.Name  
+		overhead.User.Back.Text = player.Name --The Players name
+		overhead.RoTe.Text = rank -- The Players grouprank E.G. Level-1
+		overhead.RoTe.Back.Text = rank 
+		overhead.RoTe.TextColor = player.Team.TeamColor
+		
+		overhead.Parent = char
+		overhead.Adornee = char.Head
+		
+		-- Class-D
+		if player.Team.Name == "D-Class" then
+			overhead.RoTe.Text = "[Class - Disposable]"
+			overhead.RoTe.Back.Text = overhead.RoTe.Text
+		end
+		
+		-- [DATA EXPUNGED]
+		if player.Team.Name == "Internal Security Department" then
+			overhead.RoTe.Text = "[DATA EXPUNGED]"
+			overhead.RoTe.Back.Text = "[DATA EXPUNGED]"
+			overhead.User.TextTransparency = 1
+			overhead.User.Back.TextTransparency = 1
+		end
+		
+		-- SCIENTIFIC DEPARTMENT
+		if player.Team.Name == "Scientific Department" then
+			local ScDrank = player:GetRoleInGroup(16210919)
+			overhead.RoTe.Text = ScDrank
+			overhead.RoTe.Back.Text = ScDrank
+		end
+		
+		-- SECURITY DEPARTMENT
+		if player.Team.Name == "Security Department" then
+			local SDrank = player:GetRoleInGroup(16210909)
+			overhead.RoTe.Text = SDrank
+			overhead.RoTe.Back.Text = SDrank
+		end
+		
+		-- MEDICAL DEPARTMENT
+		if player.Team.Name == "Medical Department" then
+			local MDrank = player:GetRoleInGroup(16210911)
+			overhead.RoTe.Text = MDrank
+			overhead.RoTe.Back.Text = MDrank
+		end
+		
+		-- ETHICS COMMITTEE
+		if player.Team.Name == "Ethics Committee" then
+			local ECrank = player:GetRoleInGroup(16210914)
+			overhead.RoTe.Text = ECrank
+			overhead.RoTe.Back.Text = ECrank
+		end
+		
+		-- DEPARTMENT OF EXTERNAL AFFAIRS
+		if player.Team.Name == "Department of External Affairs" then
+			local DEArank = player:GetRoleInGroup(16210946)
+			overhead.RoTe.Text = DEArank
+			overhead.RoTe.Back.Text = DEArank
+		end
+		
+		-- ENGINEERING & TECHNICAL 
+		if player.Team.Name == "Engineering & Technical" then
+			local ETrank = player:GetRoleInGroup(16210942)
+			overhead.RoTe.Text = ETrank
+			overhead.RoTe.Back.Text = ETrank
+		end
+		
+		-- MANUFACTURING DEPARTMENT
+		if player.Team.Name == "Manufacturing Department" then
+			local MaDrank = player:GetRoleInGroup(16210922)
+			overhead.RoTe.Text = MaDrank
+			overhead.RoTe.Back.Text = MaDrank
+		end
+		
+		-- ADMINISTRATIVE DEPARTMENT
+		if player.Team.Name == "Administrative Department" then
+			local ETrank = player:GetRoleInGroup(groupId)
+			overhead.RoTe.Text = ETrank
+			overhead.RoTe.Back.Text = ETrank
+		end
+		
+		-- MOBILE TASK FORCE
+		
+		if player.Team.Name == "Mobile Task Force" then
+			local MTFgroup = 16210905
+			overhead.RoTe.TextColor = BrickColor.new("Navy blue")
+			if player:GetRankInGroup(MTFgroup) == 5 then
+				local id = tostring(player.UserId)
+				local fourNums = string.sub(id, 1, 4)
+				overhead.RoTe.Text = "nu-7 ~ " .. fourNums
+				overhead.RoTe.Back.Text = overhead.RoTe.Text
+				overhead.User.TextTransparency = 1
+				overhead.User.Back.TextTransparency = 1
+				
+			elseif player:GetRankInGroup(MTFgroup) == 4 then
+				local id = tostring(player.UserId)
+				local fourNums = string.sub(id, 1, 4)
+				overhead.RoTe.Text = "ε-11 ~ " .. fourNums
+				overhead.RoTe.Back.Text = overhead.RoTe.Text
+				overhead.User.TextTransparency = 1
+				overhead.User.Back.TextTransparency = 1
+				
+			elseif player:GetRankInGroup(MTFgroup) == 6 then
+				local id = tostring(player.UserId)
+				local fourNums = string.sub(id, 1, 4)
+				overhead.RoTe.Text = "β-7 ~ " .. fourNums
+				overhead.RoTe.Back.Text = overhead.RoTe.Text
+				overhead.User.TextTransparency = 1
+				overhead.User.Back.TextTransparency = 1
+				
+			elseif player:GetRankInGroup(MTFgroup) == 7 then
+				local id = tostring(player.UserId)
+				local fourNums = string.sub(id, 1, 4)
+				overhead.RoTe.Text = "α-1 ~ " .. fourNums
+				overhead.RoTe.Back.Text = overhead.RoTe.Text
+				overhead.User.TextTransparency = 1
+				overhead.User.Back.TextTransparency = 1
+				
+			elseif player:GetRankInGroup(MTFgroup) == 111 then
+				local id = tostring(player.UserId)
+				local fourNums = string.sub(id, 1, 4)
+				overhead.RoTe.Text = "[RESTRICTED]"
+				overhead.RoTe.Back.Text = overhead.RoTe.Text
+				overhead.User.TextTransparency = 1
+				overhead.User.Back.TextTransparency = 1
+				
+			elseif player:GetRankInGroup(MTFgroup) == 1111 then
+				local id = tostring(player.UserId)
+				local fourNums = string.sub(id, 1, 4)
+				overhead.RoTe.Text = "op ~ " .. fourNums
+				overhead.RoTe.Back.Text = overhead.RoTe.Text
+				overhead.User.TextTransparency = 1
+				overhead.User.Back.TextTransparency = 1
+				
+			elseif player:GetRankInGroup(MTFgroup) == 249 then
+				local id = tostring(player.UserId)
+				local fourNums = string.sub(id, 1, 4)
+				overhead.RoTe.Text = "XO ~ " .. fourNums
+				overhead.RoTe.Back.Text = overhead.RoTe.Text
+				overhead.User.TextTransparency = 1
+				overhead.User.Back.TextTransparency = 1
+				
+				
+			elseif player:GetRankInGroup(MTFgroup) == 250 then
+				local id = tostring(player.UserId)
+				local fourNums = string.sub(id, 1, 4)
+				overhead.RoTe.Text = "TFL ~ " .. fourNums
+				overhead.RoTe.Back.Text = overhead.RoTe.Text
+				overhead.User.TextTransparency = 1
+				overhead.User.Back.TextTransparency = 1
+				
+			elseif player:GetRankInGroup(MTFgroup) == 251 then
+				local id = tostring(player.UserId)
+				local fourNums = string.sub(id, 1, 4)
+				overhead.RoTe.Text = "AD ~ " .. fourNums
+				overhead.RoTe.Back.Text = overhead.RoTe.Text
+				overhead.User.TextTransparency = 1
+				overhead.User.Back.TextTransparency = 1
+				
+			elseif player:GetRankInGroup(MTFgroup) == 252 then
+				overhead.RoTe.Text = "Director"
+				overhead.RoTe.Back.Text = overhead.RoTe.Text
+				overhead.User.TextTransparency = 1
+				overhead.User.Back.TextTransparency = 1
+				
+			elseif player:GetRankInGroup(MTFgroup) == 253 then
+				overhead.RoTe.Text = "Overseer"
+				overhead.RoTe.Back.Text = overhead.RoTe.Text
+				overhead.User.TextTransparency = 1
+				overhead.User.Back.TextTransparency = 1
+			end
+		end
+	end)
+end)
