@@ -1,0 +1,7 @@
+script.Parent.Changed:Connect(function()
+	if script.Parent.Value == true then
+		local timmy = workspace.GameSettings:FindFirstChild(script.Parent.Parent.Name)
+		wait(timmy.Value)
+		script.Parent.Value = false
+	end
+end)
